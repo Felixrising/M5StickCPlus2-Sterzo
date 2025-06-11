@@ -12,7 +12,7 @@ This project transforms your M5StickCPlus2 into a professional-grade steering co
 - **Comprehensive calibration system** with visual feedback
 - **1-degree steering precision** (vs 10-degree binning)
 - **Drift compensation** and automatic centering
-- **Professional button handling** with short/long press actions
+- **Nuttons!** with short/long press actions
 
 ## 🚀 Features
 
@@ -75,7 +75,6 @@ All dependencies are automatically managed by PlatformIO:
 - `M5Unified` - M5StickCPlus2 hardware abstraction
 - `ESP32 BLE Arduino` - Bluetooth Low Energy support
 - `Preferences` - Non-volatile storage
-- `Madgwick` - AHRS algorithm library (unused, kept for compatibility)
 
 ## 🎮 Usage
 
@@ -139,7 +138,7 @@ All dependencies are automatically managed by PlatformIO:
 
 **Steering feels unstable:**
 - Perform full calibration (long press Button A or B)
-- Ensure device is mounted securely
+- Ensure device is mounted securely on your trainer handlebars.
 - Check battery level (low battery affects performance)
 
 **Device goes to sleep too quickly:**
@@ -198,7 +197,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **[@stefaandesmet2003](https://github.com/stefaandesmet2003/ESP32Sterzo.git)** - Original ESP32Sterzo implementation
 - **M5Stack** - M5StickCPlus2 hardware and libraries
 - **Zwift** - Steering protocol documentation and support
-- **Mahony & Madgwick** - AHRS algorithm implementations
+- **Mahony** - AHRS algorithm implementations
 
 ## 📊 Project Status
 
