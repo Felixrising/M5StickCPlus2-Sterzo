@@ -12,7 +12,7 @@ This project transforms your M5StickCPlus2 into a professional-grade steering co
 - **Comprehensive calibration system** with visual feedback
 - **1-degree steering precision** (vs 10-degree binning)
 - **Drift compensation** and automatic centering
-- **Nuttons!** with short/long press actions
+- **Buttons!** with short/long press actions
 
 ## 🚀 Features
 
