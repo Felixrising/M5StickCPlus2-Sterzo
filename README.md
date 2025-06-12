@@ -14,6 +14,28 @@ This project transforms your M5StickCPlus2 into a professional-grade steering co
 - **Drift compensation** and automatic centering
 - **Professional button handling** with short/long press actions
 
+## 🛒 Hardware - M5StickC PLUS2
+
+![M5StickC PLUS2 Overview](images/M5StickC-PLUS2-overview.jpeg)
+
+![M5StickC PLUS2 Device](images/M5StickC-PLUS2-device.jpeg)
+
+The M5StickC PLUS2 is a compact ESP32-based development board perfect for this steering controller project. It features:
+
+- **ESP32-PICO-V3-02** - Dual-core processor with built-in WiFi/BLE
+- **MPU6886** - 6-axis IMU (gyroscope + accelerometer) 
+- **135x240 Color LCD** - 1.14" ST7789V2 display
+- **200mAh Battery** - Built-in LiPo with charging circuit
+- **Compact Design** - 25.4mm x 54mm form factor
+- **Multiple Buttons** - A, B, and C (power) buttons
+- **USB-C** - For programming and charging
+
+### 🛍️ Where to Buy
+
+**[M5StickC PLUS2 on AliExpress](https://s.click.aliexpress.com/e/_okImkbs)** *(Affiliate Link)*
+
+*Note: This is an affiliate link. Purchasing through this link supports the project development at no additional cost to you.*
+
 ## 🚀 Features
 
 ### Core Functionality
@@ -47,9 +69,9 @@ This project transforms your M5StickCPlus2 into a professional-grade steering co
 
 ## 🛠 Hardware Requirements
 
-- **M5StickCPlus2** - Main device with built-in IMU (MPU6886)
+- **M5StickCPlus2** - See [Hardware section](#-hardware---m5stickc-plus2) above for details and purchase links
 - **USB-C Cable** - For programming and charging
-- **Battery** - Built-in 200mAh LiPo battery
+- **Mounting Solution** - Handlebar mount or secure attachment method (optional)
 
 ## 📦 Installation
 
