@@ -119,6 +119,9 @@ enum PowerMode {
 };
 PowerMode currentPowerMode = POWER_BLE_WAITING;
 
+// Guard flag to prevent multiple enterULPSleep() calls
+bool enteringSleep = false;
+
 // —————— DISPLAY MANAGEMENT SYSTEM ——————
 // Display mode states
 enum DisplayMode {
@@ -537,6 +540,13 @@ void exitScreenOffMode() {
 }
 
 void enterULPSleep() {
+  // Guard against multiple calls
+  if (enteringSleep) {
+    Serial.println("enterULPSleep() already in progress, ignoring duplicate call");
+    return;
+  }
+  
+  enteringSleep = true;
   Serial.println("=== ENTERING ULP SLEEP MODE ===");
   
   // Show sleep message on screen briefly
@@ -583,13 +593,31 @@ void enterULPSleep() {
   Serial.printf("- Motion detection via I2C during timer wake\n");
   
   Serial.printf("Going to ULP sleep (wake every %dms via ULP coprocessor)...\n", ULP_WAKE_INTERVAL);
-  Serial.flush(); // Ensure all serial output is sent
+  
+  // EXPERIMENTAL: Lower serial baud rate before sleep to test corruption theory
+  Serial.flush(); // Ensure all output is sent at current baud rate
+  delay(100);
+  Serial.end();
+  Serial.begin(9600); // Much lower baud rate for low CPU frequency
+  Serial.println("Serial switched to 9600 baud for sleep");
+  Serial.flush();
   
   // Enter deep sleep with ULP monitoring
   esp_deep_sleep_start();
+  
+  // This line should never be reached, but reset flag just in case
+  enteringSleep = false;
 }
 
 void handleWakeupFromSleep() {
+  // Reset the sleep guard flag on wake-up
+  enteringSleep = false;
+  
+  // EXPERIMENTAL: Restore normal serial baud rate after wake-up
+  Serial.end();
+  Serial.begin(115200);
+  Serial.println("Serial restored to 115200 baud after wake-up");
+  
   esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
   
   // Always turn on screen and show wake reason prominently
