@@ -316,7 +316,7 @@ float getPitch() {
 void configurePowerManagement() {
   Serial.println("Configuring ESP32 power management...");
   
-  // Configure automatic light sleep with BLE-compatible frequencies
+  // Try to configure power management - make it optional since it may not be supported
   esp_pm_config_esp32_t pm_config;
   pm_config.max_freq_mhz = BLE_CPU_FREQ;  // 80MHz for BLE compatibility
   pm_config.min_freq_mhz = LOW_POWER_CPU_FREQ; // 10MHz minimum for I2C/GPIO
@@ -325,8 +325,10 @@ void configurePowerManagement() {
   esp_err_t ret = esp_pm_configure(&pm_config);
   if (ret == ESP_OK) {
     Serial.println("Power management configured successfully");
+  } else if (ret == ESP_ERR_NOT_SUPPORTED) {
+    Serial.println("Power management not supported on this platform - using manual CPU frequency control");
   } else {
-    Serial.printf("Power management configuration failed: %d\n", ret);
+    Serial.printf("Power management configuration failed: %d (0x%x) - continuing with manual control\n", ret, ret);
   }
   
   Serial.println("Power management configured for BLE compatibility");
@@ -595,28 +597,35 @@ void enterULPSleep() {
   Serial.printf("Going to ULP sleep (wake every %dms via ULP coprocessor)...\n", ULP_WAKE_INTERVAL);
   
   // EXPERIMENTAL: Lower serial baud rate before sleep to test corruption theory
-  Serial.flush(); // Ensure all output is sent at current baud rate
-  delay(100);
+  Serial.flush(); // Send all data at 115200
   Serial.end();
-  Serial.begin(9600); // Much lower baud rate for low CPU frequency
+  Serial.begin(9600); // Lower baud rate for low CPU frequency
   Serial.println("Serial switched to 9600 baud for sleep");
   Serial.flush();
   
-  // Enter deep sleep with ULP monitoring
-  esp_deep_sleep_start();
+  // TEMPORARY: Disable deep sleep to test if crash is from sleep entry
+  Serial.println("DEEP SLEEP DISABLED FOR TESTING - entering low power loop instead");
   
-  // This line should never be reached, but reset flag just in case
-  enteringSleep = false;
+  // Instead of deep sleep, enter a low power loop
+  setCpuFrequencyMhz(10); // Lowest CPU frequency
+  while (true) {
+    delay(1000);
+    // Check for button press to wake up
+    if (!digitalRead(37)) { // Button A pressed
+      Serial.println("Button A detected - exiting low power loop");
+      setCpuFrequencyMhz(80);
+      enteringSleep = false;
+      return;
+    }
+  }
+  
+  // Original deep sleep call (commented out for testing)
+  // esp_deep_sleep_start();
 }
 
 void handleWakeupFromSleep() {
   // Reset the sleep guard flag on wake-up
   enteringSleep = false;
-  
-  // EXPERIMENTAL: Restore normal serial baud rate after wake-up
-  Serial.end();
-  Serial.begin(115200);
-  Serial.println("Serial restored to 115200 baud after wake-up");
   
   esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
   
