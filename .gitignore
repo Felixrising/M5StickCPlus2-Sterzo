@@ -32,3 +32,14 @@ Thumbs.db
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+working/
+
+# Ignore unused library files in src/libs/
+src/libs/F_MPU6886.hpp
+src/libs/F_MPU6886.cpp
+src/libs/IMUUtils.hpp
+src/libs/IMUUtils.cpp
+src/libs/IMUBase.hpp
+
+cursor rules.txt
