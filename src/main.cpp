@@ -266,26 +266,26 @@ void updateMainDisplay() {
   }
   
   // Calculate current values
-  float rawYaw = getYaw();
-  float rel = rawYaw + yawOffset;
+    float rawYaw = getYaw();
+    float rel = rawYaw + yawOffset;
   
   // Normalize to [-180, 180]
-  while (rel > 180) rel -= 360;
-  while (rel < -180) rel += 360;
-  
-  float unclamped_rel = rel;
-  rel = constrain(rel, -40, 40);
-  float bin = round(rel/1.0f)*1.0f;
-  if (abs(bin) < 0.1f) bin = 0.0f;
-  
+    while (rel > 180) rel -= 360;
+    while (rel < -180) rel += 360;
+    
+    float unclamped_rel = rel;
+    rel = constrain(rel, -40, 40);
+    float bin = round(rel/1.0f)*1.0f;
+    if (abs(bin) < 0.1f) bin = 0.0f;
+    
   char yawText[20];
   char binText[20];
   bool flashOn = (millis() / 500) % 2 == 0; // Flash every 500ms for smoother animation
-  if (unclamped_rel >= 40.0f) {
+    if (unclamped_rel >= 40.0f) {
     snprintf(yawText, sizeof(yawText), "%.1f%s", rel, flashOn ? ">" : "");
-  } else if (unclamped_rel <= -40.0f) {
+    } else if (unclamped_rel <= -40.0f) {
     snprintf(yawText, sizeof(yawText), "%.1f%s", rel, flashOn ? "<" : "");
-  } else {
+    } else {
     snprintf(yawText, sizeof(yawText), "%.1f", rel);
   }
   snprintf(binText, sizeof(binText), "%.0f", bin);

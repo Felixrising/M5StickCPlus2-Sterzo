@@ -1,4 +1,4 @@
-# ZTEERSTICK v0.1-RC2
+# ZTEERSTICK v0.1
 
 A high-performance Zwift steering device using the M5StickCPlus2 with advanced IMU/AHRS implementation, intelligent power management, and seamless BLE connectivity.
 
@@ -6,14 +6,14 @@ A high-performance Zwift steering device using the M5StickCPlus2 with advanced I
 
 This project transforms your M5StickCPlus2 into a professional-grade steering controller for Zwift cycling simulation called the **ZTEERSTICK**. Based on the excellent work from [@stefaandesmet2003/ESP32Sterzo](https://github.com/stefaandesmet2003/ESP32Sterzo.git), this implementation adds significant enhancements including:
 
-- **Mahony AHRS algorithm** for stable yaw calculation with configurable hardware filtering
-- **Intelligent activity detection** with position-based sleep system
+- **Mahony AHRS algorithm** with configurable hardware filtering for ultra-stable yaw calculation
+- **Intelligent power management** with position-based wake/sleep system
+- **Motion-based activity detection** with 30-second timeout and automatic brightness control
+- **Comprehensive calibration system** with gyro bias compensation
+- **1-degree steering precision** with drift compensation and automatic centering
+- **Professional button handling** with zero-yaw functionality
 - **Smooth 10Hz display updates** with selective region rendering (no flashing)
-- **Advanced drift compensation** with distance-proportional centering
-- **Comprehensive calibration system** with visual feedback
-- **1-degree steering precision** with configurable update frequencies
-- **Professional button handling** with instant yaw zeroing
-- **Automatic brightness control** based on activity state
+- **Configurable system architecture** with hardware LPF and timing optimization
 
 ## 🛒 Hardware - M5StickC PLUS2
 
@@ -24,11 +24,11 @@ This project transforms your M5StickCPlus2 into a professional-grade steering co
 The M5StickC PLUS2 is a compact ESP32-based development board perfect for the ZTEERSTICK project. It features:
 
 - **ESP32-PICO-V3-02** - Dual-core processor with built-in WiFi/BLE
-- **MPU6886** - 6-axis IMU (gyroscope + accelerometer) with hardware low-pass filtering
+- **MPU6886** - 6-axis IMU (gyroscope + accelerometer) with configurable hardware filtering
 - **135x240 Color LCD** - 1.14" ST7789V2 display with adaptive brightness
-- **200mAh Battery** - Built-in LiPo with charging circuit
+- **200mAh Battery** - Built-in LiPo with charging circuit and voltage monitoring
 - **Compact Design** - 25.4mm x 54mm form factor
-- **Multiple Buttons** - A, B, and C (power) buttons
+- **Multiple Buttons** - A, B, and C (power) buttons with short/long press detection
 - **USB-C** - For programming and charging
 
 ### 🛍️ Where to Buy
@@ -40,35 +40,41 @@ The M5StickC PLUS2 is a compact ESP32-based development board perfect for the ZT
 ## 🚀 Features
 
 ### Core Functionality
-- ✅ **Zwift BLE Integration** - Full compatibility with Zwift steering protocol
-- ✅ **Mahony AHRS Filter** - Superior stability with configurable 10Hz hardware LPF
-- ✅ **1° Steering Precision** - Fine-grained control with configurable update rates
-- ✅ **Intelligent Activity Detection** - Position-based motion sensing prevents false sleep
-- ✅ **Instant Yaw Zeroing** - Button press immediately centers steering
-- ✅ **Smart Drift Compensation** - Distance-proportional centering prevents oscillation
+- ✅ **Zwift BLE Integration** - Full compatibility with Zwift steering protocol including handshake authentication
+- ✅ **Mahony AHRS Filter** - Superior stability with configurable 10Hz hardware low-pass filtering
+- ✅ **1° Steering Precision** - Fine-grained control with intelligent drift compensation
+- ✅ **Position-Based Sleep System** - Uses gravity vector comparison for reliable motion detection
+- ✅ **Zero-Yaw Functionality** - Button press to instantly center steering
+- ✅ **Activity Detection** - Detects steering changes regardless of BLE connection status
 
-### Display & Interface
-- 📱 **Smooth 10Hz Updates** - Flicker-free selective region rendering
-- 📱 **Adaptive Brightness** - Auto-dims from 5% → 1% based on activity
-- 📱 **Real-time Indicators** - Yaw angle, steering bin, connection status, battery
-- 📱 **Visual Limit Alerts** - Flashing arrows at ±40° steering limits
-- 📱 **Activity Status** - Clear indicators: Active (A), Idle (I), Sleep countdown (Zzzz)
-- 📱 **Status Messages** - Full-screen redraw for calibration and system messages
+### Advanced Power Management
+- ⚡ **Position-Based Wake/Sleep** - 6-second timer wake-ups with 1-degree position threshold
+- ⚡ **GPIO4 Power Hold** - Proper deep sleep power management for M5StickCPlus2
+- ⚡ **RTC Memory Persistence** - Maintains wake counts and gravity baseline across sleep cycles
+- ⚡ **Adaptive Brightness** - 5% active → 1% idle → 1% sleep countdown
+- ⚡ **30-Second Activity Timeout** - Intelligent activity detection with visual feedback
 
-### Power Management
-- ⚡ **Position-Based Sleep** - 30-second activity timeout with 1-second position checks
-- ⚡ **Deep Sleep Cycles** - 6-second timer wake-ups for motion detection
-- ⚡ **GPIO4 Power Hold** - Proper M5StickCPlus2 power management
-- ⚡ **Configurable Frequencies** - 10Hz IMU/display/motion processing
-- ⚡ **RTC Memory** - Preserves wake counts and gravity baseline across sleep
+### User Interface & Display
+- 📱 **Smooth 10Hz Updates** - Flicker-free display with selective region rendering
+- 📱 **Real-time Display** - Yaw angle, steering bin, BLE status, battery voltage
+- 📱 **Visual Activity States** - Green dot (active), yellow dot (idle), countdown (sleep)
+- 📱 **Visual Limit Indicators** - Flashing arrows at ±40° steering limits
+- 📱 **Battery Monitoring** - Real-time voltage display with precision monitoring
+- 📱 **Status Messages** - Clear feedback for calibration and zero operations
 
 ### Button Controls
-- 🔘 **Button A Short** - Instant yaw zero (no delay)
+- 🔘 **Button A Short** - Zero yaw to current position
 - 🔘 **Button A Long (2s)** - Full gyro calibration sequence
-- 🔘 **Button B Short** - Instant yaw zero (no delay)
+- 🔘 **Button B Short** - Zero yaw to current position
 - 🔘 **Button B Long (3s)** - Full gyro calibration sequence
-- 🔘 **Button C Short** - Wake display
-- 🔘 **Button C Long (3s)** - Force deep sleep
+- 🔘 **Button C** - Power/wake functionality
+
+### Technical Improvements
+- 🔧 **Configurable Architecture** - System-wide frequency configuration (10Hz IMU/Display/Motion)
+- 🔧 **Hardware LPF** - MPU6886 10Hz low-pass filter with register mapping
+- 🔧 **Timing Synchronization** - Eliminates race conditions in activity detection
+- 🔧 **Selective Display Updates** - Only redraws changed elements, eliminates flashing
+- 🔧 **Major State Transition Detection** - Forces full redraw on brightness changes
 
 ## 🛠 Hardware Requirements
 
@@ -99,81 +105,66 @@ pio device monitor
 All dependencies are automatically managed by PlatformIO:
 - `M5Unified` - M5StickCPlus2 hardware abstraction
 - `ESP32 BLE Arduino` - Bluetooth Low Energy support
-- `Preferences` - Non-volatile storage
+- `Preferences` - Non-volatile storage for calibration data
 
 ## 🎮 Usage
 
 ### First Time Setup
 1. **Power On** - ZTEERSTICK performs automatic gyro calibration on first boot
 2. **Zwift Pairing** - Open Zwift → Settings → Connections → Search for "STERZO"
-3. **Calibration** - Hold Button A or B for 2-3 seconds for manual calibration if needed
+3. **Zero Yaw** - Press Button A or B to set current position as center
 
 ### Normal Operation
 1. **Mount Device** - Attach to handlebars or hold in hand
-2. **Connect to Zwift** - Device advertises as "STERZO" 
+2. **Connect to Zwift** - Device advertises as "STERZO" with full handshake protocol
 3. **Steering Range** - ±40° physical rotation = full Zwift steering
-4. **Auto-Centering** - Device gradually returns to center with smart drift compensation
-5. **Instant Centering** - Press Button A or B for immediate yaw zero
+4. **Auto-Centering** - Built-in drift compensation gradually returns to center
+5. **Activity Detection** - Device stays awake when steering changes are detected
 
-### Activity States & Power Management
-- **Active (A)** - Green indicator, 5% brightness, full performance
-- **Idle (I)** - Yellow indicator, 1% brightness, reduced power
-- **Sleep Countdown (Zzzz)** - Gray indicator with countdown, 1% brightness
-- **Position Check** - Automatic 1-second motion detection every 30 seconds
-- **Deep Sleep** - 6-second timer wake-ups, minimal power consumption
+### Power Management States
+- **Active (Green Dot)** - < 5 seconds since activity, 5% brightness
+- **Idle (Yellow Dot)** - 5-30 seconds since activity, 1% brightness  
+- **Sleep Countdown** - > 30 seconds, shows countdown timer, 1% brightness
+- **Deep Sleep** - Enters sleep after timeout, wakes every 6 seconds to check position
 
 ## 🔧 Technical Details
 
 ### IMU Configuration
-- **Sensor** - MPU6886 6-axis IMU (gyroscope + accelerometer)
+- **Sensor** - MPU6886 6-axis IMU with hardware low-pass filtering
 - **Algorithm** - Mahony AHRS for quaternion-based orientation
-- **Hardware Filtering** - Configurable 10Hz low-pass filter
-- **Update Rate** - Configurable 10Hz motion processing
-- **Calibration** - Gyro bias compensation with visual feedback
+- **Hardware LPF** - Configurable 10Hz low-pass filter on both gyro and accelerometer
+- **Sampling Rate** - 10Hz for optimal power/performance balance
+- **Calibration** - Gyro bias compensation with 3000-sample averaging
 
-### Display System
-- **Update Rate** - Smooth 10Hz refresh with selective region rendering
-- **Brightness Control** - Automatic 5% active / 1% idle brightness
-- **Flicker-Free** - Only redraws changed regions, no screen clearing
-- **State Transitions** - Full redraw on major activity state changes
-- **Status Messages** - Full-screen overlay with automatic restoration
+### Position-Based Sleep System
+- **Motion Detection** - Gravity vector comparison with 1-degree threshold
+- **Wake Intervals** - 6-second timer wake-ups during deep sleep
+- **Activity Check Duration** - 1000ms position monitoring for reliable detection
+- **RTC Memory** - Preserves baseline gravity and wake counts across sleep cycles
 
 ### BLE Protocol
 - **Service UUID** - `347b0001-7635-408b-8918-8ff3949ce592`
 - **Steering Data** - Float32 angle in degrees (-40° to +40°)
 - **Update Rate** - On-change notification (1° resolution)
-- **Zwift Handshake** - Full protocol compatibility with challenge/response
+- **Zwift Handshake** - Full authentication protocol with challenge/response
 
-### Power Specifications
-- **Active Current** - ~80-120mA (10Hz updates, BLE active, 5% brightness)
-- **Idle Current** - ~30-50mA (10Hz updates, BLE active, 1% brightness)
-- **Sleep Current** - ~5-10mA (6-second timer wake-ups)
-- **Battery Life** - 3-5 hours active use, weeks standby
-
-### Configuration Constants
-```cpp
-// Configurable system frequencies
-const float IMU_LPF_FREQUENCY_HZ = 10.0f;        // Hardware filtering
-const float MOTION_UPDATE_FREQUENCY_HZ = 10.0f;   // Software processing
-const float DISPLAY_UPDATE_FREQUENCY_HZ = 10.0f;  // Display refresh
-
-// Activity detection
-const unsigned long ACTIVITY_TIMEOUT = 30000;     // 30 seconds
-const unsigned long ACTIVITY_CHECK_DURATION = 1000; // 1 second
-const float POSITION_CHANGE_THRESHOLD = 1.0f;     // 1 degree
-```
+### Display System
+- **Update Rate** - Smooth 10Hz refresh with selective region updates
+- **Brightness Control** - Automatic adjustment based on activity state
+- **Flicker Elimination** - Only redraws changed elements, preserves static content
+- **State Transitions** - Forces full redraw on major activity state changes
 
 ## 🔄 Calibration System
 
 ### Automatic Calibration (First Boot)
-1. **Gyro Bias** - 3000 samples over 3 seconds (device stationary)
-2. **Visual Feedback** - Progress display with completion confirmation
-3. **Instant Zero** - Current orientation set as perfect center
+1. **Gyro Bias Compensation** - 3000 samples over 3 seconds (device stationary)
+2. **Baseline Establishment** - Current gravity vector stored as reference
+3. **Zero Yaw Ready** - Device ready for user to set center position
 
-### Manual Calibration
-- **Instant Zero** - Short press Button A or B (immediate response)
-- **Full Calibration** - Long press Button A (2s) or Button B (3s)
-- **Progress Feedback** - Real-time visual progress with status messages
+### Manual Operations
+- **Zero Yaw** - Short press Button A or B to set current position as center
+- **Full Calibration** - Long press Button A (2s) or Button B (3s) for gyro recalibration
+- **Visual Feedback** - Status messages with clear operation confirmation
 
 ## 🐛 Troubleshooting
 
@@ -184,29 +175,25 @@ const float POSITION_CHANGE_THRESHOLD = 1.0f;     // 1 degree
 - Restart Zwift and search for "STERZO" in connections
 - Try power cycling the ZTEERSTICK
 
-**Steering feels unstable:**
-- Perform full calibration (long press Button A or B)
-- Ensure device is mounted securely
-- Check battery level (low battery affects performance)
-
 **Device goes to sleep despite movement:**
-- Ensure you're making actual position changes (1° threshold)
-- Activity detection works regardless of BLE connection
-- Check serial monitor for "Position changed: YES" messages
+- Ensure you're actually changing the device's orientation (not just vibration)
+- Position changes must exceed 1-degree threshold
+- Check that activity detection is working (green/yellow dots)
 
-**Display flashing or flickering:**
-- RC2 version eliminates flashing with selective region updates
-- If issues persist, check power supply and battery level
+**Steering feels unstable or drifts:**
+- Perform gyro calibration (long press Button A or B)
+- Ensure device is mounted securely to reduce vibration
+- Use zero yaw function (short press Button A or B) to recenter
 
-**Yaw drift over time:**
-- Built-in drift compensation with distance-proportional centering
-- Press Button A or B for instant zero (no delay)
-- Long press for full recalibration if needed
+**Display flashing or not updating properly:**
+- System automatically handles selective updates to prevent flashing
+- Major state transitions force complete redraws
+- Check serial monitor for any error messages
 
-**Screen too dim or bright:**
-- Automatic brightness: 5% active, 1% idle
-- Move device to trigger active state for brighter display
-- Brightness changes automatically with activity state
+**Battery drains quickly:**
+- Device should enter deep sleep when not in use
+- Check that position-based sleep system is working
+- Monitor activity states (green → yellow → countdown → sleep)
 
 ### Debug Information
 Enable serial monitoring to see detailed debug output:
@@ -215,45 +202,29 @@ pio device monitor
 ```
 
 Debug output includes:
-- IMU readings and filtering status
-- Activity detection with position change details
-- Display update timing and selective rendering
+- IMU readings and hardware filter status
+- Position change detection with gravity vectors
+- Activity state transitions and timing
 - BLE connection events and steering data
-- Power management state transitions
+- Power management and sleep/wake cycles
 - Button press detection and calibration progress
 
 ## 🔋 Battery Optimization Tips
 
-1. **Automatic power management** - Device optimizes power based on activity
-2. **Position-based sleep** - Only sleeps when truly inactive
-3. **Efficient display updates** - 10Hz selective rendering saves power
-4. **Deep sleep cycles** - Minimal power consumption during inactivity
-5. **Regular charging** - Don't let battery fully discharge
-
-## 🆕 Version 0.1-RC2 Improvements
-
-### Major Fixes
-- ✅ **Activity Detection Bug** - Fixed device sleeping despite active steering
-- ✅ **Display Flashing** - Eliminated with selective region rendering
-- ✅ **Timing Race Conditions** - Synchronized activity detection timing
-- ✅ **Screen Redraw Issues** - Fixed status message screen restoration
-
-### New Features
-- 🆕 **Configurable System Architecture** - All frequencies configurable
-- 🆕 **Hardware IMU Filtering** - 10Hz low-pass filter implementation
-- 🆕 **Smart Activity States** - Active/Idle/Sleep with automatic transitions
-- 🆕 **Adaptive Brightness** - Automatic 5%/1% brightness control
-- 🆕 **Position-Based Detection** - 1-degree threshold motion sensing
-
-### Performance Improvements
-- ⚡ **10Hz Smooth Updates** - Consistent timing across all systems
-- ⚡ **Selective Rendering** - Only redraws changed display regions
-- ⚡ **Optimized Sleep Logic** - Proper deep sleep with GPIO4 hold
-- ⚡ **Enhanced Drift Compensation** - Distance-proportional centering
+1. **Proper mounting** - Stable attachment reduces false motion detection
+2. **Regular use patterns** - Device learns your usage and optimizes accordingly
+3. **Position-based sleep** - Automatically sleeps when not moved for 30+ seconds
+4. **Brightness adaptation** - Screen dims automatically during idle periods
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
+
+### Development Notes
+- System uses configurable frequency constants for easy tuning
+- Hardware filtering is implemented with proper register mapping
+- Timing synchronization prevents race conditions
+- Display system eliminates flashing through selective updates
 
 ## 🏷️ About the Name
 
@@ -270,19 +241,25 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Zwift** - Steering protocol documentation and support
 - **Mahony** - AHRS algorithm implementation
 
-## 📊 Project Status
+## 📊 Project Status - v0.1 Release Candidate
 
-- ✅ **Core Functionality** - Complete and stable (RC2)
-- ✅ **Power Management** - Optimized with intelligent activity detection
-- ✅ **Zwift Integration** - Fully compatible and tested
+- ✅ **Core Functionality** - Complete and stable
+- ✅ **Power Management** - Position-based sleep system implemented
+- ✅ **Zwift Integration** - Full protocol compatibility with handshake
 - ✅ **Display System** - Smooth 10Hz updates without flashing
-- ✅ **Activity Detection** - Position-based motion sensing
-- ✅ **Bug Fixes** - Major timing and display issues resolved
-- 🔄 **Documentation** - Updated for RC2 features
-- 🔄 **Testing** - Continuous validation with real-world usage
+- ✅ **Activity Detection** - Reliable motion detection regardless of BLE status
+- ✅ **Hardware Filtering** - Configurable MPU6886 low-pass filtering
+- ✅ **Timing Optimization** - Race condition elimination and synchronized updates
+- ✅ **User Interface** - Professional button handling and visual feedback
+
+### v0.1 Key Improvements
+- **Eliminated constant resets** - Stable operation with proper power management
+- **Fixed activity detection** - Works regardless of BLE connection status
+- **Eliminated display flashing** - Selective region updates for smooth experience
+- **Resolved timing race conditions** - Synchronized activity detection
+- **Added hardware filtering** - Configurable 10Hz LPF for improved stability
+- **Implemented major state transitions** - Proper screen redraws on brightness changes
 
 ---
 
-**Built with ❤️ for the Zwift cycling community**
-
-*Version 0.1-RC2 - Release Candidate 2 with major stability and performance improvements* 
+**Built with ❤️ for the Zwift cycling community** 
