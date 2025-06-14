@@ -1,4 +1,4 @@
-# ZTEERSTICK v0.1
+# ZTEERSTICK v0.1-RC3
 
 A high-performance Zwift steering device using the M5StickCPlus2 with advanced IMU/AHRS implementation, intelligent power management, and seamless BLE connectivity.
 
@@ -241,7 +241,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Zwift** - Steering protocol documentation and support
 - **Mahony** - AHRS algorithm implementation
 
-## 📊 Project Status - v0.1 Release Candidate
+## 📊 Project Status - v0.1 Release Candidate 3
 
 - ✅ **Core Functionality** - Complete and stable
 - ✅ **Power Management** - Position-based sleep system implemented
@@ -262,4 +262,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ for the Zwift cycling community** 
+**Built with ❤️ for the Zwift cycling community**
+
+### 📥 Installation
+1. Download source code from [ZteerStick releases](https://github.com/Felixrising/ZteerStick/releases)
+2. Open in PlatformIO
+3. Build and upload to M5StickCPlus2
+4. See [README.md](https://github.com/Felixrising/ZteerStick/blob/dev/README.md) for detailed setup 
